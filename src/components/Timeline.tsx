@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type {
   TimelineItem as TimelineItemType,
   TimelineScale,
@@ -19,8 +19,18 @@ const getHeaderDate = (scale: TimelineScale, percent: number) => {
 };
 
 export function Timeline({ items }: TimelineProps) {
-  const lanes = useMemo(() => assignLanes(items), [items]);
-  const scale = useMemo(() => createTimelineScale(items), [items]);
+  const [dbItems, setDbItems] = useState(items);
+
+  const lanes = useMemo(() => assignLanes(dbItems), [dbItems]);
+  const scale = useMemo(() => createTimelineScale(dbItems), [dbItems]);
+
+  const changeItemName = (itemId: number, newName: string) => {
+    setDbItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === itemId ? { ...item, name: newName } : item
+      )
+    );
+  };
 
   return (
     <div className="w-full overflow-x-auto bg-white">
@@ -51,7 +61,12 @@ export function Timeline({ items }: TimelineProps) {
               className="flex h-20 border-b border-gray-200 relative"
             >
               {lane.map((item) => (
-                <TimelineItem key={item.id} item={item} scale={scale} />
+                <TimelineItem
+                  changeItemName={changeItemName}
+                  key={item.id}
+                  item={item}
+                  scale={scale}
+                />
               ))}
             </div>
           ))}
