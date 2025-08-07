@@ -1,10 +1,5 @@
 import type { TimelineItem } from "../models/timeline.model";
 
-/**
- * Takes an array of items and assigns them to lanes based on start/end dates.
- * @param items Array of timeline items to be organized into lanes
- * @returns an array of arrays containing items, where each sub-array represents a lane
- */
 export function assignLanes(items: TimelineItem[]): TimelineItem[][] {
   const sortedItems = [...items].sort(
     (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()
@@ -12,20 +7,28 @@ export function assignLanes(items: TimelineItem[]): TimelineItem[][] {
 
   const lanes: TimelineItem[][] = [];
 
-  function assignItemToLane(item: TimelineItem): void {
+  // To each item, try to find an existing lane or create a new one
+  sortedItems.forEach((item) => {
+    // Try to find a lane where the item can be placed
+    let foundLane = false;
+
     for (let i = 0; i < lanes.length; i++) {
       const lane = lanes[i];
-      if (new Date(lane[lane.length - 1].end) < new Date(item.start)) {
+      const lastItem = lane[lane.length - 1];
+
+      // If the current item starts after the last item of the lane ends
+      if (new Date(item.start) >= new Date(lastItem.end)) {
         lane.push({ ...item, lane: i });
-        return;
+        foundLane = true;
+        break;
       }
     }
-    lanes.push([{ ...item, lane: lanes.length }]);
-  }
 
-  for (const item of sortedItems) {
-    assignItemToLane(item);
-  }
+    // If no lane is found, create a new one
+    if (!foundLane) {
+      lanes.push([{ ...item, lane: lanes.length }]);
+    }
+  });
 
   return lanes;
 }

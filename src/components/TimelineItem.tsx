@@ -8,15 +8,15 @@ import type {
 interface TimelineItemProps {
   item: TimelineItemType;
   scale: TimelineScale;
-  changeItemName: (itemId: number, newName: string) => void;
   zoomLevel: number;
+  changeItemName: (itemId: number, newName: string) => void;
 }
 
 export function TimelineItem({
   item,
   scale,
-  changeItemName,
   zoomLevel,
+  changeItemName,
 }: TimelineItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,7 +54,7 @@ export function TimelineItem({
 
   return (
     <div
-      className="absolute h-20 py-2"
+      className={`absolute h-20 py-2 hover:z-50 ${isEditing ? "z-50" : ""}`}
       style={{
         left: `${left}%`,
         width: `${width}%`,
