@@ -24,6 +24,12 @@ export function TimelineItem({
   const left = scale.getPositionPercentage(item.start);
   const width = scale.getWidthPercentage(item.start, item.end);
 
+  let minWidth = `${50 * zoomLevel}px`;
+
+  if (isEditing) {
+    minWidth = `${zoomLevel < 1 ? 200 : 100}px`;
+  }
+
   const onClickItem = () => {
     setIsEditing(true);
   };
@@ -66,7 +72,7 @@ export function TimelineItem({
             ? ""
             : "line-clamp-2 leading-snug max-h-[3.5rem] break-words overflow-hidden"
         }`}
-        style={{ minWidth: `${50 * zoomLevel}px` }}
+        style={{ minWidth }}
         title={`${item.name}\n${item.start} to ${item.end}`}
         onClick={onClickItem}
       >

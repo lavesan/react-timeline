@@ -1,69 +1,81 @@
-# React + TypeScript + Vite
+# Timeline Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React timeline component that displays and manages timeline items with various features. [Live Demo](https://react-timeline-nu.vercel.app/)
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Display timeline items with start and end dates
+- Automatic lane assignment to prevent overlapping
+- Inline name editing (press Enter to save)
+- Zoom in/out functionality clicking buttons
+- Long-press zoom support
+- Items appear in front when hovered or being edited
+- Adaptive width for small items during edit
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# Install dependencies
+yarn
+# or
+npm i
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Run development server
+yarn dev
+# or
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- React + TypeScript
+- Vite
+- Tailwind CSS
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Project Structure
+
+- `src/database/timelineItems.ts` - Timeline items data
+- `src/utils/assignLanes.ts` - Lane assignment logic
+- `src/utils/timelineScale.ts` - Timeline scale calculations
+- `src/components/` - React components
+
+## What I Did
+
+- Implemented timeline based on data from timelineItems.ts
+- Created lane assignment algorithm to prevent overlapping
+- Added scale configuration for proper item positioning
+- Implemented inline editing with Enter key to save
+- Added zoom functionality with long-press support
+- Enhanced item visibility during hover/edit states
+- Improved input UX by increasing width for small items during edit
+
+## What Could Be Improved
+
+- Use Zustand for state management of timeline items
+- Add localStorage or API integration for persistence
+- Add zoom in/out with Ctrl + and Ctrl - keyboard buttons
+- Consider using an established timeline library for better maintainability (if custom features aren't critical)
+- Added the possibility of drag and drop
+
+## How you made your design decisions?
+
+I remembered the Gantt Chart and I created something similar to it, after looking at some images of it at google. I also saw some examples at dribble.
+
+References:
+
+- https://www.google.com/search?sca_esv=84a972cf9bb6250a&sxsrf=AE3TifO4POeuS1WepuMpzq03K8Po6iIP6w:1754585437844&udm=2&fbs=AIIjpHxX5k-tONtMCu8aDeA7E5WMdDwGSuc8eBkl8hX51y2q6-r6qOmgvFs8yhx59bJgnXQRW0CpTUrikAvoMvruBQ5EXrmF0QvB2iHTMAEISsCypY3En_C-6ZXkAOKKYe1VM_dhXYnf8ya_hyfPabPc6QP327DGQLWV8TjlunmFtRazebMKy76TnZ_B5R8iXM68ki5rILWz_k6Lm6YdiHzlDvB-2pOLDQ&q=timeline+applications&sa=X&ved=2ahUKEwiiwYCOlPmOAxUoDbkGHQAIMVcQtKgLegQIFxAB&biw=1821&bih=798&dpr=0.75
+- https://dribbble.com/tags/timeline
+
+## How you would test this if you had more time?
+
+Since I'm using Vite, I would use Vitest + @testing-library/react for the unit and component testing and playwright for the e2e testing, just as I used at a template I built other day with these configurations for vite: https://github.com/lavesan/vite-testing-template
+
+## What you like about your implementatio?
+
+I liked my code, that's clean and easy to understand (at least I always try to make it so).
+I loved that it worked without bugs (apparently) and is being displayed in a way that I can see the user using my application, understanding how it works and don't having many problems with it. I can see it solving his problem.
+
+## Requirements
+
+- Node.js
+- Yarn

@@ -1,5 +1,4 @@
-import { useMemo, useState, useCallback, useRef, useEffect } from "react";
-import type { WheelEvent } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 
 import type {
   TimelineItem as TimelineItemType,
@@ -40,16 +39,6 @@ export function Timeline({ items }: TimelineProps) {
     );
   };
 
-  const handleWheel = useCallback((e: WheelEvent) => {
-    if (e.ctrlKey) {
-      e.preventDefault();
-      setZoomLevel((prev) => {
-        const newZoom = prev - e.deltaY * 0.001;
-        return Math.min(Math.max(newZoom, MIN_ZOOM), MAX_ZOOM);
-      });
-    }
-  }, []);
-
   const startZooming = (isZoomIn: boolean) => {
     const adjust = isZoomIn ? 0.1 : -0.1;
 
@@ -78,7 +67,7 @@ export function Timeline({ items }: TimelineProps) {
 
   return (
     <div className="w-full bg-white">
-      {/* Controles de Zoom */}
+      {/* Zoom controls */}
       <div className="flex items-center gap-2 p-2 border-b border-gray-200">
         <button
           onClick={() => setZoomLevel((prev) => Math.max(prev - 0.1, MIN_ZOOM))}
@@ -109,8 +98,7 @@ export function Timeline({ items }: TimelineProps) {
         </button>
       </div>
 
-      {/* Timeline com suporte a zoom */}
-      <div className="overflow-x-auto" onWheel={handleWheel}>
+      <div className="overflow-x-auto">
         <div style={{ minWidth: `${BASE_WIDTH * zoomLevel}px` }}>
           <div className="flex border-b border-gray-200">
             {[0, 25, 50, 75, 100].map((percent) => (
@@ -123,14 +111,6 @@ export function Timeline({ items }: TimelineProps) {
             ))}
           </div>
           <div className="relative">
-            <div className="absolute inset-0 flex">
-              <div className="flex-1 border-r border-gray-200"></div>
-              <div className="flex-1 border-r border-gray-200"></div>
-              <div className="flex-1 border-r border-gray-200"></div>
-              <div className="flex-1 border-r border-gray-200"></div>
-              <div className="flex-1 border-r border-gray-200"></div>
-            </div>
-
             {lanes.map((lane, laneIndex) => (
               <div
                 key={laneIndex}
