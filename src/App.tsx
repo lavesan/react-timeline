@@ -1,10 +1,15 @@
-import timelineItems from "./timelineItems";
+import timelineItems from "./database/timelineItems";
+import { Timeline } from "./components/Timeline";
 
 function App() {
   return (
-    <div>
-      <h2>Good luck with your assignment! {"\u2728"}</h2>
-      <h3>{timelineItems.length} timeline items to render</h3>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-800 mb-8">
+          Timeline Application
+        </h1>
+        <Timeline items={timelineItems} />
+      </div>
     </div>
   );
 }
