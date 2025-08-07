@@ -9,15 +9,16 @@ interface TimelineItemProps {
   item: TimelineItemType;
   scale: TimelineScale;
   changeItemName: (itemId: number, newName: string) => void;
+  zoomLevel: number;
 }
 
 export function TimelineItem({
   item,
   scale,
   changeItemName,
+  zoomLevel,
 }: TimelineItemProps) {
   const [isEditing, setIsEditing] = useState(false);
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   const left = scale.getPositionPercentage(item.start);
@@ -54,14 +55,18 @@ export function TimelineItem({
   return (
     <div
       className="absolute h-20 py-2"
-      style={{ left: `${left}%`, width: `${width}%` }}
+      style={{
+        left: `${left}%`,
+        width: `${width}%`,
+      }}
     >
       <div
-        className={`w-full min-w-[50px] bg-blue-500 border-blue-700 border text-white px-3 py-1.5 rounded text-sm cursor-pointer hover:bg-blue-600 transition-colors ${
+        className={`w-full bg-blue-500 border-blue-700 border text-white px-3 py-1.5 rounded text-sm cursor-pointer hover:bg-blue-600 transition-colors ${
           isEditing
             ? ""
             : "line-clamp-2 leading-snug max-h-[3.5rem] break-words overflow-hidden"
         }`}
+        style={{ minWidth: `${50 * zoomLevel}px` }}
         title={`${item.name}\n${item.start} to ${item.end}`}
         onClick={onClickItem}
       >
@@ -72,7 +77,7 @@ export function TimelineItem({
             defaultValue={item.name}
             onBlur={onBlurInput}
             onKeyDown={onKeyDownInput}
-            className="w-full h-full px-3 py-1.5 text-sm rounded border border-white bg-blue-500 text-white focus:outline-none focus:ring-0"
+            className="px-2 py-1 w-full h-full text-sm rounded border border-white bg-blue-500 text-white focus:outline-none focus:ring-0"
           />
         ) : (
           item.name
